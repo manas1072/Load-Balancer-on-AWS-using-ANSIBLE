@@ -1,0 +1,31 @@
+- hosts: localhost
+  vars_files:
+          secret.yml
+
+  tasks: 
+         - name: "Reverse Proxy Server"
+           ec2:
+                 region: ap-south-1
+                 aws_access_key: "{{ access_key }}"
+                 aws_secret_key: "{{ secret_key }}"
+                 count: 1
+                 state: present
+                 instance_type: t2.micro
+                 key_name: awskey
+                 image: ami-08f63db601b82ff5f
+                 instance_tags: 
+                     Name: Haproxy
+           
+                  
+         - name: "WebServer"
+           ec2:
+                 region: ap-south-1
+                 aws_access_key: "{{ access_key }}"
+                 aws_secret_key: "{{ secret_key }}"
+                 count: 2
+                 state: present
+                 instance_type: t2.micro
+                 key_name: awskey
+                 image: ami-08f63db601b82ff5f
+                 instance_tags:
+                     Name: WebServer
